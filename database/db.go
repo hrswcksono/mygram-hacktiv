@@ -28,12 +28,13 @@ func StartDB() {
 		log.Fatal("error connecting to database :", err)
 	}
 
-	err = db.Debug().AutoMigrate(entity.User{}, entity.Photo{}, entity.Comment{}, entity.SocialMedia{})
+	err = db.AutoMigrate(entity.User{}, entity.Photo{}, entity.Comment{}, entity.SocialMedia{})
 	if err != nil {
 		panic("Migration failed: " + err.Error())
 	}
 
 }
+
 func GetDB() *gorm.DB {
 	return db
 }

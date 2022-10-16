@@ -6,9 +6,9 @@ import (
 
 type Photo struct {
 	ID        int
-	Title     string
+	Title     string `gorm:"not null"`
 	Caption   string
-	PhotoUrl  string
+	PhotoUrl  string `gorm:"not null"`
 	UserID    int
 	Comments  Comment
 	CreatedAt time.Time

@@ -3,6 +3,7 @@ package auth_helper
 import (
 	"errors"
 	"strings"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ func GenerateToken(id uint, email string) string {
 	claims := jwt.MapClaims{
 		"id":    id,
 		"email": email,
+		"exp":   time.Now().Add(time.Hour * 3).Unix(),
 	}
 
 	parseToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -23,7 +25,7 @@ func GenerateToken(id uint, email string) string {
 	return signedToken
 }
 
-func VerifyToken(c *gin.Context) (interface{}, error) {
+func VerifyToken(c *gin.Context) (jwt.MapClaims, error) {
 	errResponse := errors.New("sign in to proceed")
 	headerToken := c.Request.Header.Get("Authorization")
 	bearer := strings.HasPrefix(headerToken, "Bearer")
