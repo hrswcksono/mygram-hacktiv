@@ -8,7 +8,9 @@ import (
 	"github.com/hrswcksono/mygram-hacktiv/entity"
 	"github.com/hrswcksono/mygram-hacktiv/pkg/auth_helper"
 	"github.com/hrswcksono/mygram-hacktiv/pkg/helper"
+	"github.com/hrswcksono/mygram-hacktiv/repository/comment_repository"
 	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository"
+	"github.com/hrswcksono/mygram-hacktiv/repository/social_media_repository"
 	"github.com/hrswcksono/mygram-hacktiv/repository/user_repository"
 )
 
@@ -16,17 +18,23 @@ type AuthService interface {
 	Authentication() gin.HandlerFunc
 	UserAuthorization() gin.HandlerFunc
 	PhotoAuthorization() gin.HandlerFunc
+	CommentAuthorization() gin.HandlerFunc
+	SMediaAuthorization() gin.HandlerFunc
 }
 
 type authService struct {
-	userRepo  user_repository.UserRepository
-	photoRepo photo_repository.PhotoRepository
+	userRepo    user_repository.UserRepository
+	photoRepo   photo_repository.PhotoRepository
+	commentRepo comment_repository.CommentRepository
+	smediaRepo  social_media_repository.SocialMediaRepository
 }
 
-func NewAuthService(userRepo user_repository.UserRepository, photoRepo photo_repository.PhotoRepository) AuthService {
+func NewAuthService(userRepo user_repository.UserRepository, photoRepo photo_repository.PhotoRepository, commentRepo comment_repository.CommentRepository, smediaRepo social_media_repository.SocialMediaRepository) AuthService {
 	return &authService{
-		userRepo:  userRepo,
-		photoRepo: photoRepo,
+		userRepo:    userRepo,
+		photoRepo:   photoRepo,
+		commentRepo: commentRepo,
+		smediaRepo:  smediaRepo,
 	}
 }
 
@@ -141,6 +149,90 @@ func (a *authService) PhotoAuthorization() gin.HandlerFunc {
 		}
 
 		if photo.UserID != userData.ID {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"err_message": "forbidden access",
+			})
+			return
+		}
+
+		ctx.Next()
+	})
+}
+
+func (a *authService) CommentAuthorization() gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		var userData entity.User
+
+		if value, ok := ctx.MustGet("userData").(entity.User); !ok {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"err_message": "unauthorized",
+			})
+			return
+		} else {
+			userData = value
+		}
+
+		commentParam, err := helper.GetParamId(ctx, "commentId")
+
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"err_message": "invalid params",
+			})
+			return
+		}
+
+		data, err := a.commentRepo.GetCommentByID(commentParam)
+
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"err_message": "not found",
+			})
+			return
+		}
+
+		if data.UserID != userData.ID {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"err_message": "forbidden access",
+			})
+			return
+		}
+
+		ctx.Next()
+	})
+}
+
+func (a *authService) SMediaAuthorization() gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		var userData entity.User
+
+		if value, ok := ctx.MustGet("userData").(entity.User); !ok {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"err_message": "unauthorized",
+			})
+			return
+		} else {
+			userData = value
+		}
+
+		smediaParam, err := helper.GetParamId(ctx, "socialMediaId")
+
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"err_message": "invalid params",
+			})
+			return
+		}
+
+		data, err := a.smediaRepo.GetSocialMediaByID(smediaParam)
+
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"err_message": "not found",
+			})
+			return
+		}
+
+		if data.UserID != userData.ID {
 			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 				"err_message": "forbidden access",
 			})

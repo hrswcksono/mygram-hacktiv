@@ -6,7 +6,6 @@ import (
 	"github.com/hrswcksono/mygram-hacktiv/entity"
 	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type photoPG struct {
@@ -31,7 +30,7 @@ func (p *photoPG) CreatePhoto(photoPayload *entity.Photo) (*entity.Photo, error)
 		return nil, err
 	}
 
-	if err := tx.Omit(clause.Associations).Preload("Users").Create(&photoPayload).Error; err != nil {
+	if err := tx.Create(&photoPayload).Error; err != nil {
 		tx.Rollback()
 		return nil, err
 	}

@@ -65,7 +65,7 @@ func (input CreatePhotoRequest) CreatePhotoRequestMapper(output *entity.Photo) {
 	output.PhotoUrl = input.PhotoUrl
 }
 
-func ToGetPhotoResponse(in entity.Photo) *GetPhotoResponse {
+func toGetPhotoResponse(in entity.Photo) *GetPhotoResponse {
 	return &GetPhotoResponse{
 		ID:        in.ID,
 		Title:     in.Title,
@@ -85,7 +85,7 @@ func MapperResponseGet(input []entity.Photo) []GetPhotoResponse {
 	var output []GetPhotoResponse
 	for _, v := range input {
 		// var newItem GetPhotoResponse
-		newItem := *ToGetPhotoResponse(v)
+		newItem := *toGetPhotoResponse(v)
 		output = append(output, newItem)
 	}
 	return output

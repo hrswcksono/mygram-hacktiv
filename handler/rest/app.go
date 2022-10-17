@@ -5,7 +5,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hrswcksono/mygram-hacktiv/database"
+	"github.com/hrswcksono/mygram-hacktiv/repository/comment_repository/comment_pg"
 	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository/photo_pg"
+	"github.com/hrswcksono/mygram-hacktiv/repository/social_media_repository/social_media_pg"
 	"github.com/hrswcksono/mygram-hacktiv/repository/user_repository/user_pg"
 	"github.com/hrswcksono/mygram-hacktiv/service"
 )
@@ -25,7 +27,15 @@ func StartApp() {
 	photoService := service.NewPhotoService(photoRepo)
 	photoRestHandler := NewPhotoHandler(photoService)
 
-	authService := service.NewAuthService(userRepo, photoRepo)
+	commentRepo := comment_pg.NewCommentPG(db)
+	commentService := service.NewCommentService(commentRepo)
+	commentRestHandler := NewCommentHanlder(commentService)
+
+	smediaRepo := social_media_pg.NewSMediaPG(db)
+	smediaService := service.NewSMediaService(smediaRepo)
+	smediaRestHandler := NewSMediaHandler(smediaService)
+
+	authService := service.NewAuthService(userRepo, photoRepo, commentRepo, smediaRepo)
 
 	route := gin.Default()
 
@@ -45,6 +55,24 @@ func StartApp() {
 		photoRoute.GET("/", photoRestHandler.ReadAllPhoto)
 		photoRoute.PUT("/:photoId", authService.PhotoAuthorization(), photoRestHandler.EditPhoto)
 		photoRoute.DELETE("/:photoId", authService.PhotoAuthorization(), photoRestHandler.DeletePhoto)
+	}
+
+	commentRoute := route.Group("/comments")
+	{
+		commentRoute.Use(authService.Authentication())
+		commentRoute.POST("/", commentRestHandler.AddComment)
+		commentRoute.GET("/", commentRestHandler.ReadAllComment)
+		commentRoute.PUT("/:commentId", authService.CommentAuthorization(), commentRestHandler.EditComment)
+		commentRoute.DELETE("/:commentId", authService.CommentAuthorization(), commentRestHandler.DeleteComment)
+	}
+
+	smediaRoute := route.Group("/socialmedias")
+	{
+		smediaRoute.Use(authService.Authentication())
+		smediaRoute.POST("/", smediaRestHandler.AddSMedia)
+		smediaRoute.GET("/", smediaRestHandler.ReadAllSMedia)
+		smediaRoute.PUT("/:socialMediaId", authService.SMediaAuthorization(), smediaRestHandler.EditSMedia)
+		smediaRoute.DELETE("/:socialMediaId", authService.SMediaAuthorization(), smediaRestHandler.DeleteSMedia)
 	}
 
 	fmt.Println("Server running on PORT =>", port)
