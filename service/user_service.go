@@ -28,12 +28,12 @@ func NewUserService(userRepo user_repository.UserRepository) UserService {
 }
 
 func (u *userService) Register(userPayload *dto.RegisterRequest) (*dto.RegisterResponse, error) {
-	regiterRequest := &entity.User{}
+	registerRequest := &entity.User{}
 
 	fmt.Println(userPayload)
-	userPayload.RegisterRequestMapper(regiterRequest)
+	userPayload.RegisterRequestMapper(registerRequest)
 
-	data, err := u.userRepo.RegisterUser(regiterRequest)
+	data, err := u.userRepo.RegisterUser(registerRequest)
 
 	if err != nil {
 		return nil, err

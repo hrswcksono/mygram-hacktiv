@@ -8,21 +8,25 @@ import (
 	"github.com/hrswcksono/mygram-hacktiv/entity"
 	"github.com/hrswcksono/mygram-hacktiv/pkg/auth_helper"
 	"github.com/hrswcksono/mygram-hacktiv/pkg/helper"
+	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository"
 	"github.com/hrswcksono/mygram-hacktiv/repository/user_repository"
 )
 
 type AuthService interface {
 	Authentication() gin.HandlerFunc
 	UserAuthorization() gin.HandlerFunc
+	PhotoAuthorization() gin.HandlerFunc
 }
 
 type authService struct {
-	userRepo user_repository.UserRepository
+	userRepo  user_repository.UserRepository
+	photoRepo photo_repository.PhotoRepository
 }
 
-func NewAuthService(userRepo user_repository.UserRepository) AuthService {
+func NewAuthService(userRepo user_repository.UserRepository, photoRepo photo_repository.PhotoRepository) AuthService {
 	return &authService{
-		userRepo: userRepo,
+		userRepo:  userRepo,
+		photoRepo: photoRepo,
 	}
 }
 
@@ -95,6 +99,48 @@ func (a *authService) UserAuthorization() gin.HandlerFunc {
 		}
 
 		if user.ID != userData.ID {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"err_message": "forbidden access",
+			})
+			return
+		}
+
+		ctx.Next()
+	})
+}
+
+func (a *authService) PhotoAuthorization() gin.HandlerFunc {
+	return gin.HandlerFunc(func(ctx *gin.Context) {
+		var userData entity.User
+
+		if value, ok := ctx.MustGet("userData").(entity.User); !ok {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"err_message": "unauthorized",
+			})
+			return
+		} else {
+			userData = value
+		}
+
+		photoParam, err := helper.GetParamId(ctx, "photoId")
+
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"err_message": "invalid params",
+			})
+			return
+		}
+
+		photo, err := a.photoRepo.GetPhotoByID(photoParam)
+
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"err_message": "not found",
+			})
+			return
+		}
+
+		if photo.UserID != userData.ID {
 			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 				"err_message": "forbidden access",
 			})

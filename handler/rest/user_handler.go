@@ -24,7 +24,7 @@ func newUserHandler(userService service.UserService) userRestHandler {
 func (u userRestHandler) Register(c *gin.Context) {
 	var user dto.RegisterRequest
 
-	fmt.Println(user.Email)
+	// fmt.Println(user.Email)
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, map[string]interface{}{

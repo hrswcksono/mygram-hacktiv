@@ -15,3 +15,23 @@ type Photo struct {
 	UpdatedAt time.Time
 	User      *User
 }
+
+// func (u *Photo) BeforeCreate(tx *gorm.DB) (err error) {
+// 	_, errUpdate := govalidator.ValidateStruct(u)
+
+// 	if errUpdate != nil {
+// 		err = errUpdate
+// 		return
+// 	}
+// 	return
+// }
+
+// func (u *Photo) BeforeUpdate(tx *gorm.DB) (err error) {
+// 	_, errUpdate := govalidator.ValidateStruct(u)
+
+// 	if errUpdate != nil {
+// 		err = errUpdate
+// 		return
+// 	}
+// 	return
+// }

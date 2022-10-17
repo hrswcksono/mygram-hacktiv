@@ -11,13 +11,13 @@ import (
 
 type User struct {
 	ID           int
-	Username     string `gorm:"index:,unique, not null"`
-	Email        string `gorm:"index:,unique, not null" valid:"email"`
-	Password     string `gorm:"not null" valid:"minstringlength(6)"`
-	Age          int    `gorm:"not null"`
-	Photos       Photo
-	Comments     Comment
-	SocialMedias SocialMedia
+	Username     string      `gorm:"index:,unique, not null"`
+	Email        string      `gorm:"index:,unique, not null" valid:"email"`
+	Password     string      `gorm:"not null" valid:"minstringlength(6)"`
+	Age          int         `gorm:"not null"`
+	Photos       Photo       `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Comments     Comment     `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	SocialMedias SocialMedia `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

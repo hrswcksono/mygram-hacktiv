@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hrswcksono/mygram-hacktiv/database"
+	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository/photo_pg"
 	"github.com/hrswcksono/mygram-hacktiv/repository/user_repository/user_pg"
 	"github.com/hrswcksono/mygram-hacktiv/service"
 )
@@ -20,7 +21,11 @@ func StartApp() {
 	userService := service.NewUserService(userRepo)
 	userRestHandler := newUserHandler(userService)
 
-	authService := service.NewAuthService(userRepo)
+	photoRepo := photo_pg.NewPhotoPG(db)
+	photoService := service.NewPhotoService(photoRepo)
+	photoRestHandler := NewPhotoHandler(photoService)
+
+	authService := service.NewAuthService(userRepo, photoRepo)
 
 	route := gin.Default()
 
@@ -31,6 +36,15 @@ func StartApp() {
 		userRoute.Use(authService.Authentication())
 		userRoute.PUT("/:userId", authService.UserAuthorization(), userRestHandler.UpdateUser)
 		userRoute.DELETE("/", userRestHandler.DeleteUser)
+	}
+
+	photoRoute := route.Group("/photos")
+	{
+		photoRoute.Use(authService.Authentication())
+		photoRoute.POST("/", photoRestHandler.AddPhoto)
+		photoRoute.GET("/", photoRestHandler.ReadAllPhoto)
+		photoRoute.PUT("/:photoId", authService.PhotoAuthorization(), photoRestHandler.EditPhoto)
+		photoRoute.DELETE("/:photoId", authService.PhotoAuthorization(), photoRestHandler.DeletePhoto)
 	}
 
 	fmt.Println("Server running on PORT =>", port)
