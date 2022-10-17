@@ -63,6 +63,8 @@ func (c *commentService) EditComment(dtoEdit *dto.EditCommentRequest, userId int
 		Message: dtoEdit.Message,
 	}
 
+	print(editRequest)
+
 	comment, err := c.commentRepo.UpdateComment(editRequest)
 
 	if err != nil {

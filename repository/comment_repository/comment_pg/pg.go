@@ -75,7 +75,14 @@ func (c *commentPG) UpdateComment(commentPayload *entity.Comment) (*entity.Comme
 		return nil, err
 	}
 
-	return commentPayload, tx.Commit().Error
+	var comment = &entity.Comment{}
+
+	if err := tx.Preload("Photo", func(db *gorm.DB) *gorm.DB { return db.Find(&entity.Photo{}) }).Find(&comment, commentPayload.ID).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	return comment, tx.Commit().Error
 }
 
 func (c *commentPG) DeleteComment(commentId int) error {
@@ -99,6 +106,7 @@ func (c *commentPG) DeleteComment(commentId int) error {
 
 	return tx.Commit().Error
 }
+
 func (c *commentPG) GetCommentByID(commentId int) (*entity.Comment, error) {
 	tx := c.db.Begin()
 	defer func() {
@@ -113,7 +121,7 @@ func (c *commentPG) GetCommentByID(commentId int) (*entity.Comment, error) {
 
 	var comment = &entity.Comment{}
 
-	if err := tx.Delete(&comment, commentId).Error; err != nil {
+	if err := tx.Find(&comment, commentId).Error; err != nil {
 		tx.Rollback()
 		return nil, err
 	}
