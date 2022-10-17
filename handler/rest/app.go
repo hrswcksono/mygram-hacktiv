@@ -5,11 +5,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hrswcksono/mygram-hacktiv/database"
+	"github.com/hrswcksono/mygram-hacktiv/docs"
 	"github.com/hrswcksono/mygram-hacktiv/repository/comment_repository/comment_pg"
 	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository/photo_pg"
 	"github.com/hrswcksono/mygram-hacktiv/repository/social_media_repository/social_media_pg"
 	"github.com/hrswcksono/mygram-hacktiv/repository/user_repository/user_pg"
 	"github.com/hrswcksono/mygram-hacktiv/service"
+
+	swaggerfiles "github.com/swaggo/files" // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 const port = ":8080"
@@ -38,6 +42,15 @@ func StartApp() {
 	authService := service.NewAuthService(userRepo, photoRepo, commentRepo, smediaRepo)
 
 	route := gin.Default()
+
+	docs.SwaggerInfo.Title = "MyGram"
+	docs.SwaggerInfo.Description = "MyGram API"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:8080"
+	// docs.SwaggerInfo.BasePath = "/v2"
+	docs.SwaggerInfo.Schemes = []string{"http"}
+
+	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	userRoute := route.Group("/users")
 	{

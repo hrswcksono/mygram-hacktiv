@@ -21,10 +21,17 @@ func newUserHandler(userService service.UserService) userRestHandler {
 	}
 }
 
+// Register godoc
+// @Tags auth
+// @Description Register to mygram
+// @ID register-user
+// @Accept json
+// @Produce json
+// @Param RequestBody body dto.RegisterRequest true "request body json"
+// @Success 201 {object} dto.RegisterResponse
+// @Router /users/register [post]
 func (u userRestHandler) Register(c *gin.Context) {
 	var user dto.RegisterRequest
-
-	// fmt.Println(user.Email)
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, map[string]interface{}{
@@ -47,6 +54,15 @@ func (u userRestHandler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, data)
 }
 
+// Login godoc
+// @Tags auth
+// @Description Login to mygram
+// @ID login-user
+// @Accept json
+// @Produce json
+// @Param RequestBody body dto.LoginRequest true "request body json"
+// @Success 200 {object} dto.LoginResponse
+// @Router /users/login [post]
 func (u userRestHandler) Login(c *gin.Context) {
 	var user *dto.LoginRequest
 
@@ -70,9 +86,20 @@ func (u userRestHandler) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, data)
+	c.JSON(http.StatusOK, data)
 }
 
+// Update User godoc
+// @Tags user
+// @Description Update data user
+// @ID Update-user
+// @Accept json
+// @Produce json
+// @Param RequestBody body dto.UserEditRequest true "request body json"
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param userId path int true "user's id"
+// @Success 200 {object} dto.UserEditResponse
+// @Router /users/{userId} [put]
 func (u userRestHandler) UpdateUser(c *gin.Context) {
 	userId, err := helper.GetParamId(c, "userId")
 
@@ -108,6 +135,14 @@ func (u userRestHandler) UpdateUser(c *gin.Context) {
 
 }
 
+// Delete User godoc
+// @Tags user
+// @Description Delete data user
+// @ID Delete-user
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Success 200 {object} dto.DeleteResponse
+// @Router /users/ [delete]
 func (u userRestHandler) DeleteUser(c *gin.Context) {
 
 	var userId int
@@ -126,7 +161,7 @@ func (u userRestHandler) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, dto.DeleteResponse{
+	c.JSON(http.StatusOK, dto.DeleteResponse{
 		Message: "Your account has been successfully deleted",
 	})
 }

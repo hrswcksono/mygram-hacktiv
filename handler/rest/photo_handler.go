@@ -20,6 +20,16 @@ func NewPhotoHandler(photoService service.PhotoService) photoRestHandler {
 	}
 }
 
+// Add Photo godoc
+// @Tags photo
+// @Description Add data photo
+// @ID Add-photo
+// @Accept json
+// @Produce json
+// @Param RequestBody body dto.CreatePhotoRequest true "request body json"
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Success 201 {object} dto.CreatedPhotoResponse
+// @Router /photos [post]
 func (u photoRestHandler) AddPhoto(c *gin.Context) {
 
 	var photo dto.CreatePhotoRequest
@@ -51,6 +61,14 @@ func (u photoRestHandler) AddPhoto(c *gin.Context) {
 	c.JSON(http.StatusCreated, data)
 }
 
+// GetAll Photo godoc
+// @Tags photo
+// @Description Get all data photo
+// @ID Get-all-photo
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Success 200 {array} dto.GetPhotoResponse
+// @Router /photos [get]
 func (u photoRestHandler) ReadAllPhoto(c *gin.Context) {
 	photo, err := u.service.ReadAllPhoto()
 
@@ -65,6 +83,17 @@ func (u photoRestHandler) ReadAllPhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, photo)
 }
 
+// Update Photo godoc
+// @Tags photo
+// @Description Update data photo
+// @ID Update-photo
+// @Accept json
+// @Produce json
+// @Param RequestBody body dto.EditPhotoRequest true "request body json"
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param photoId path int true "photo's id"
+// @Success 200 {object} dto.EditPhotoResponse
+// @Router /photos/{photoId} [put]
 func (u photoRestHandler) EditPhoto(c *gin.Context) {
 	photoId, err := helper.GetParamId(c, "photoId")
 
@@ -99,6 +128,15 @@ func (u photoRestHandler) EditPhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, data)
 }
 
+// Delete Photo godoc
+// @Tags photo
+// @Description Delete data photo
+// @ID Delete-photo
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param photoId path int true "photo's id"
+// @Success 200 {object} dto.DeleteResponse
+// @Router /photos/{photoId} [delete]
 func (u photoRestHandler) DeletePhoto(c *gin.Context) {
 	photoId, err := helper.GetParamId(c, "photoId")
 
@@ -120,7 +158,7 @@ func (u photoRestHandler) DeletePhoto(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, dto.DeleteResponse{
+	c.JSON(http.StatusOK, dto.DeleteResponse{
 		Message: "Your photo has been successfully deleted",
 	})
 }

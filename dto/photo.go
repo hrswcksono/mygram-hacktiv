@@ -10,7 +10,6 @@ type CreatePhotoRequest struct {
 	Title    string `json:"title"`
 	Caption  string `json:"caption"`
 	PhotoUrl string `json:"photo_url"`
-	UserID   int
 }
 
 type CreatedPhotoResponse struct {
