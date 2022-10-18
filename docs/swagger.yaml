@@ -2,134 +2,181 @@ definitions:
   dto.CreateCommentRequest:
     properties:
       message:
+        example: message 1
         type: string
       photo_id:
+        example: 1
         type: integer
     type: object
   dto.CreateCommentResponse:
     properties:
       created_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       id:
+        example: 1
         type: integer
       message:
+        example: message 1
         type: string
       photo_id:
+        example: 1
         type: integer
       user_id:
+        example: 1
         type: integer
     type: object
   dto.CreatePhotoRequest:
     properties:
       caption:
+        example: gunung yang ada di indonesia
         type: string
       photo_url:
+        example: google.com
         type: string
       title:
+        example: pegunungan
         type: string
     type: object
   dto.CreateSMediaRequest:
     properties:
       name:
+        example: twitter
         type: string
       social_media_url:
+        example: twitter.com
         type: string
     type: object
   dto.CreateSMediaResponse:
     properties:
       created_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       id:
+        example: 1
         type: integer
       name:
+        example: twitter
         type: string
       social_media_url:
+        example: twitter.com
         type: string
       user_id:
+        example: 2
         type: integer
     type: object
   dto.CreatedPhotoResponse:
     properties:
       caption:
+        example: gunung yang ada di indonesia
         type: string
       created_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       id:
+        example: 1
         type: integer
       photo_url:
+        example: google.com
         type: string
       title:
+        example: pegunungan
         type: string
       user_id:
+        example: 2
         type: integer
     type: object
   dto.DeleteResponse:
     properties:
       message:
+        example: Your <item> has been successfully deleted
         type: string
     type: object
   dto.EditCommentRequest:
     properties:
       message:
+        example: message 1
         type: string
     type: object
   dto.EditCommentResponse:
     properties:
       caption:
+        example: gunung yang ada di indonesia
         type: string
       id:
+        example: 1
         type: integer
       photo_url:
+        example: google.com
         type: string
       title:
+        example: pegunungan
         type: string
       updated_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       user_id:
+        example: 1
         type: integer
     type: object
   dto.EditPhotoRequest:
     properties:
       caption:
+        example: gunung yang ada di indonesia
         type: string
       photo_url:
+        example: google.com
         type: string
       title:
+        example: pegunungan
         type: string
     type: object
   dto.EditPhotoResponse:
     properties:
       caption:
+        example: gunung yang ada di indonesia
         type: string
       id:
+        example: 1
         type: integer
       photo_url:
+        example: google.com
         type: string
       title:
+        example: pegunungan
         type: string
       updated_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       user_id:
+        example: 2
         type: integer
     type: object
   dto.EditSMediaRequest:
     properties:
       name:
+        example: twitter
         type: string
       social_media_url:
+        example: twitter.com
         type: string
     type: object
   dto.EditSMediaResponse:
     properties:
       id:
+        example: 1
         type: integer
       name:
+        example: twitter
         type: string
       social_media_url:
+        example: twitter.com
         type: string
       updated_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       user_id:
+        example: 2
         type: integer
     type: object
   dto.GetCommentResponse:
@@ -139,16 +186,22 @@ definitions:
       User:
         $ref: '#/definitions/dto.UserComment'
       created_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       id:
+        example: 1
         type: integer
       message:
+        example: message 1
         type: string
       photo_id:
+        example: 1
         type: integer
       updated_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       user_id:
+        example: 1
         type: integer
     type: object
   dto.GetPhotoResponse:
@@ -156,25 +209,34 @@ definitions:
       User:
         $ref: '#/definitions/dto.GetPhotoUser'
       caption:
+        example: gunung yang ada di indonesia
         type: string
       created_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       id:
+        example: 1
         type: integer
       photo_url:
+        example: google.com
         type: string
       title:
+        example: pegunungan
         type: string
       updated_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       user_id:
+        example: 2
         type: integer
     type: object
   dto.GetPhotoUser:
     properties:
       email:
+        example: email@email.com
         type: string
       username:
+        example: username1
         type: string
     type: object
   dto.GetSMediaResponse:
@@ -199,14 +261,19 @@ definitions:
   dto.PhotoComment:
     properties:
       caption:
+        example: gunung yang ada di indonesia
         type: string
       id:
+        example: 1
         type: integer
       photo_url:
+        example: google.com
         type: string
       title:
+        example: pegunungan
         type: string
       user_id:
+        example: 1
         type: integer
     type: object
   dto.RegisterRequest:
@@ -235,33 +302,44 @@ definitions:
     properties:
       User:
         $ref: '#/definitions/dto.SMediaUser'
-      UserId:
-        type: integer
       created_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
       id:
+        example: 1
         type: integer
       name:
+        example: twitter
         type: string
       social_media_url:
+        example: twitter.com
         type: string
       updated_at:
+        example: "2022-10-17T13:44:00.294125+07:00"
         type: string
+      user_id:
+        example: 2
+        type: integer
     type: object
   dto.SMediaUser:
     properties:
       id:
+        example: 1
         type: integer
       username:
+        example: username1
         type: string
     type: object
   dto.UserComment:
     properties:
       email:
+        example: email@email.com
         type: string
       id:
+        example: 1
         type: integer
       username:
+        example: username1
         type: string
     type: object
   dto.UserEditRequest:

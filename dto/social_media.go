@@ -7,16 +7,16 @@ import (
 )
 
 type CreateSMediaRequest struct {
-	Name           string `json:"name"`
-	SocialMediaURL string `json:"social_media_url"`
+	Name           string `json:"name" example:"twitter"`
+	SocialMediaURL string `json:"social_media_url" example:"twitter.com"`
 }
 
 type CreateSMediaResponse struct {
-	ID             int       `json:"id"`
-	Name           string    `json:"name"`
-	SocialMediaURL string    `json:"social_media_url"`
-	UserID         int       `json:"user_id"`
-	CreatedAt      time.Time `json:"created_at"`
+	ID             int       `json:"id" example:"1"`
+	Name           string    `json:"name" example:"twitter"`
+	SocialMediaURL string    `json:"social_media_url" example:"twitter.com"`
+	UserID         int       `json:"user_id" example:"2"`
+	CreatedAt      time.Time `json:"created_at" example:"2022-10-17T13:44:00.294125+07:00"`
 }
 
 type GetSMediaResponse struct {
@@ -24,31 +24,31 @@ type GetSMediaResponse struct {
 }
 
 type SMediaList struct {
-	ID             int        `json:"id"`
-	Name           string     `json:"name"`
-	SocialMediaURL string     `json:"social_media_url"`
-	UserID         int        `json:"UserId"`
-	CreatedAt      time.Time  `json:"created_at"`
-	UpdatedAt      time.Time  `json:"updated_at"`
+	ID             int        `json:"id" example:"1"`
+	Name           string     `json:"name" example:"twitter"`
+	SocialMediaURL string     `json:"social_media_url" example:"twitter.com"`
+	UserID         int        `json:"user_id" example:"2"`
+	CreatedAt      time.Time  `json:"created_at" example:"2022-10-17T13:44:00.294125+07:00"`
+	UpdatedAt      time.Time  `json:"updated_at" example:"2022-10-17T13:44:00.294125+07:00"`
 	User           SMediaUser `json:"User"`
 }
 
 type SMediaUser struct {
-	ID       int    `json:"id"`
-	Username string `json:"username"`
+	ID       int    `json:"id" example:"1"`
+	Username string `json:"username" example:"username1"`
 }
 
 type EditSMediaRequest struct {
-	Name           string `json:"name"`
-	SocialMediaURL string `json:"social_media_url"`
+	Name           string `json:"name" example:"twitter"`
+	SocialMediaURL string `json:"social_media_url" example:"twitter.com"`
 }
 
 type EditSMediaResponse struct {
-	ID             int       `json:"id"`
-	Name           string    `json:"name"`
-	SocialMediaURL string    `json:"social_media_url"`
-	UserID         int       `json:"user_id"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	ID             int       `json:"id" example:"1"`
+	Name           string    `json:"name" example:"twitter"`
+	SocialMediaURL string    `json:"social_media_url" example:"twitter.com"`
+	UserID         int       `json:"user_id" example:"2"`
+	UpdatedAt      time.Time `json:"updated_at" example:"2022-10-17T13:44:00.294125+07:00"`
 }
 
 func toGetListSMediaResponse(in entity.SocialMedia) *SMediaList {

@@ -637,10 +637,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "message 1"
                 },
                 "photo_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -648,19 +650,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "message 1"
                 },
                 "photo_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -668,13 +675,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "caption": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "gunung yang ada di indonesia"
                 },
                 "photo_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google.com"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "pegunungan"
                 }
             }
         },
@@ -682,10 +692,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter"
                 },
                 "social_media_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter.com"
                 }
             }
         },
@@ -693,19 +705,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter"
                 },
                 "social_media_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter.com"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },
@@ -713,22 +730,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "caption": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "gunung yang ada di indonesia"
                 },
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "photo_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google.com"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "pegunungan"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },
@@ -736,7 +759,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Your \u003citem\u003e has been successfully deleted"
                 }
             }
         },
@@ -744,7 +768,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "message 1"
                 }
             }
         },
@@ -752,22 +777,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "caption": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "gunung yang ada di indonesia"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "photo_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google.com"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "pegunungan"
                 },
                 "updated_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -775,13 +806,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "caption": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "gunung yang ada di indonesia"
                 },
                 "photo_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google.com"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "pegunungan"
                 }
             }
         },
@@ -789,22 +823,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "caption": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "gunung yang ada di indonesia"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "photo_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google.com"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "pegunungan"
                 },
                 "updated_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },
@@ -812,10 +852,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter"
                 },
                 "social_media_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter.com"
                 }
             }
         },
@@ -823,19 +865,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter"
                 },
                 "social_media_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter.com"
                 },
                 "updated_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },
@@ -849,22 +896,28 @@ const docTemplate = `{
                     "$ref": "#/definitions/dto.UserComment"
                 },
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "message 1"
                 },
                 "photo_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "updated_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -875,25 +928,32 @@ const docTemplate = `{
                     "$ref": "#/definitions/dto.GetPhotoUser"
                 },
                 "caption": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "gunung yang ada di indonesia"
                 },
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "photo_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google.com"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "pegunungan"
                 },
                 "updated_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },
@@ -901,10 +961,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "email@email.com"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "username1"
                 }
             }
         },
@@ -942,19 +1004,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "caption": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "gunung yang ada di indonesia"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "photo_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google.com"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "pegunungan"
                 },
                 "user_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -998,23 +1065,29 @@ const docTemplate = `{
                 "User": {
                     "$ref": "#/definitions/dto.SMediaUser"
                 },
-                "UserId": {
-                    "type": "integer"
-                },
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter"
                 },
                 "social_media_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "twitter.com"
                 },
                 "updated_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2022-10-17T13:44:00.294125+07:00"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },
@@ -1022,10 +1095,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "username1"
                 }
             }
         },
@@ -1033,13 +1108,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "email@email.com"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "username1"
                 }
             }
         },
