@@ -47,13 +47,10 @@ func (u smediaRestHandler) AddSMedia(c *gin.Context) {
 
 	userId = value.ID
 
-	data, err := u.service.AddSMedia(&smedia, userId)
+	data, err1 := u.service.AddSMedia(&smedia, userId)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 
@@ -72,10 +69,7 @@ func (u smediaRestHandler) ReadAllSMedia(c *gin.Context) {
 	smedia, err := u.service.ReadAllSMedia()
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -114,13 +108,10 @@ func (u smediaRestHandler) EditSMedia(c *gin.Context) {
 		return
 	}
 
-	data, err := u.service.EditSMedia(&smedia, smediaId)
+	data, err1 := u.service.EditSMedia(&smedia, smediaId)
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 
@@ -147,13 +138,10 @@ func (u smediaRestHandler) DeleteSMedia(c *gin.Context) {
 		return
 	}
 
-	err = u.service.DeleteSMedia(smediaId)
+	err1 := u.service.DeleteSMedia(smediaId)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 

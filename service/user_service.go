@@ -1,20 +1,20 @@
 package service
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/hrswcksono/mygram-hacktiv/dto"
 	"github.com/hrswcksono/mygram-hacktiv/entity"
 	"github.com/hrswcksono/mygram-hacktiv/pkg/auth_helper"
+	"github.com/hrswcksono/mygram-hacktiv/pkg/errs"
 	"github.com/hrswcksono/mygram-hacktiv/repository/user_repository"
 )
 
 type UserService interface {
-	Register(userPayload *dto.RegisterRequest) (*dto.RegisterResponse, error)
-	Login(user *dto.LoginRequest) (*dto.LoginResponse, error)
-	UpdateUser(user *dto.UserEditRequest, userId int) (*dto.UserEditResponse, error)
-	DeleteUser(userId int) error
+	Register(userPayload *dto.RegisterRequest) (*dto.RegisterResponse, errs.MessageErr)
+	Login(user *dto.LoginRequest) (*dto.LoginResponse, errs.MessageErr)
+	UpdateUser(user *dto.UserEditRequest, userId int) (*dto.UserEditResponse, errs.MessageErr)
+	DeleteUser(userId int) errs.MessageErr
 }
 
 type userService struct {
@@ -27,7 +27,7 @@ func NewUserService(userRepo user_repository.UserRepository) UserService {
 	}
 }
 
-func (u *userService) Register(userPayload *dto.RegisterRequest) (*dto.RegisterResponse, error) {
+func (u *userService) Register(userPayload *dto.RegisterRequest) (*dto.RegisterResponse, errs.MessageErr) {
 	registerRequest := &entity.User{}
 
 	fmt.Println(userPayload)
@@ -42,7 +42,7 @@ func (u *userService) Register(userPayload *dto.RegisterRequest) (*dto.RegisterR
 	return dto.ToRegisterResponse(*data), nil
 }
 
-func (u *userService) Login(user *dto.LoginRequest) (*dto.LoginResponse, error) {
+func (u *userService) Login(user *dto.LoginRequest) (*dto.LoginResponse, errs.MessageErr) {
 
 	userPayload := &entity.User{
 		Email: user.Email,
@@ -51,15 +51,13 @@ func (u *userService) Login(user *dto.LoginRequest) (*dto.LoginResponse, error) 
 	userData, err := u.userRepo.LoginUser(userPayload)
 
 	if err != nil {
-		fmt.Println("error get user by email")
 		return nil, err
 	}
 
 	validPassword := auth_helper.ComparePass([]byte(userData.Password), []byte(user.Password))
 
 	if !validPassword {
-		fmt.Println("error compare password")
-		return nil, errors.New("invalid email/password")
+		return nil, errs.NewNotAuthenticated("error compare password")
 	}
 
 	token := auth_helper.GenerateToken(uint(userData.ID), userData.Username)
@@ -71,7 +69,7 @@ func (u *userService) Login(user *dto.LoginRequest) (*dto.LoginResponse, error) 
 	return response, nil
 }
 
-func (u *userService) UpdateUser(user *dto.UserEditRequest, userId int) (*dto.UserEditResponse, error) {
+func (u *userService) UpdateUser(user *dto.UserEditRequest, userId int) (*dto.UserEditResponse, errs.MessageErr) {
 	var editRequest = &entity.User{}
 
 	user.EditRequestMapper(editRequest)
@@ -93,7 +91,7 @@ func (u *userService) UpdateUser(user *dto.UserEditRequest, userId int) (*dto.Us
 	return response, nil
 }
 
-func (u *userService) DeleteUser(userId int) error {
+func (u *userService) DeleteUser(userId int) errs.MessageErr {
 	err := u.userRepo.DeleteUser(userId)
 
 	if err != nil {

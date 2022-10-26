@@ -44,10 +44,7 @@ func (u userRestHandler) Register(c *gin.Context) {
 	data, err := u.service.Register(&user)
 
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "BAD_REQUEST",
-		})
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -79,10 +76,7 @@ func (u userRestHandler) Login(c *gin.Context) {
 	data, err := u.service.Login(user)
 
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "BAD_REQUEST",
-		})
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -121,13 +115,10 @@ func (u userRestHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	user, err := u.service.UpdateUser(editRequest, userId)
+	user, errs := u.service.UpdateUser(editRequest, userId)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if errs != nil {
+		c.JSON(errs.Status(), errs)
 		return
 	}
 
@@ -161,7 +152,7 @@ func (u userRestHandler) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, dto.DeleteResponse{
+	c.JSON(err.Status(), dto.DeleteResponse{
 		Message: "Your account has been successfully deleted",
 	})
 }

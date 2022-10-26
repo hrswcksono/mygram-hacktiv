@@ -97,9 +97,9 @@ func (a *authService) UserAuthorization() gin.HandlerFunc {
 			return
 		}
 
-		user, err := a.userRepo.GetUserByID(userIdParam)
+		user, err1 := a.userRepo.GetUserByID(userIdParam)
 
-		if err != nil {
+		if err1 != nil {
 			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 				"err_message": "not found",
 			})
@@ -139,9 +139,9 @@ func (a *authService) PhotoAuthorization() gin.HandlerFunc {
 			return
 		}
 
-		photo, err := a.photoRepo.GetPhotoByID(photoParam)
+		photo, _ := a.photoRepo.GetPhotoByID(photoParam)
 
-		if err != nil {
+		if photo.ID == 0 {
 			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 				"err_message": "not found",
 			})
@@ -181,10 +181,10 @@ func (a *authService) CommentAuthorization() gin.HandlerFunc {
 			return
 		}
 
-		data, err := a.commentRepo.GetCommentByID(commentParam)
+		data, _ := a.commentRepo.GetCommentByID(commentParam)
 
-		if err != nil {
-			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+		if data.ID == 0 {
+			ctx.AbortWithStatusJSON(http.StatusForbidden, gin.H{
 				"err_message": "not found",
 			})
 			return
@@ -223,9 +223,9 @@ func (a *authService) SMediaAuthorization() gin.HandlerFunc {
 			return
 		}
 
-		data, err := a.smediaRepo.GetSocialMediaByID(smediaParam)
+		data, _ := a.smediaRepo.GetSocialMediaByID(smediaParam)
 
-		if err != nil {
+		if data.ID == 0 {
 			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 				"err_message": "not found",
 			})

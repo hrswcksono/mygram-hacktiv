@@ -1,10 +1,10 @@
 package user_pg
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/hrswcksono/mygram-hacktiv/entity"
+	"github.com/hrswcksono/mygram-hacktiv/pkg/errs"
 	"github.com/hrswcksono/mygram-hacktiv/repository/user_repository"
 	"gorm.io/gorm"
 )
@@ -19,7 +19,7 @@ func NewUserPG(db *gorm.DB) user_repository.UserRepository {
 	}
 }
 
-func (u *userPG) RegisterUser(userPayload *entity.User) (*entity.User, error) {
+func (u *userPG) RegisterUser(userPayload *entity.User) (*entity.User, errs.MessageErr) {
 	tx := u.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -28,25 +28,29 @@ func (u *userPG) RegisterUser(userPayload *entity.User) (*entity.User, error) {
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	if err := tx.Create(userPayload).Error; err != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	var user = &entity.User{}
 
 	if err := tx.Where("email = ?", userPayload.Email).Find(&user).Error; err != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return user, tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return user, nil
 }
 
-func (u *userPG) LoginUser(userPayload *entity.User) (*entity.User, error) {
+func (u *userPG) LoginUser(userPayload *entity.User) (*entity.User, errs.MessageErr) {
 	tx := u.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -55,20 +59,24 @@ func (u *userPG) LoginUser(userPayload *entity.User) (*entity.User, error) {
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	var user = &entity.User{}
 
 	if err := tx.Where("email = ?", userPayload.Email).Find(&user).Error; err != nil {
 		tx.Rollback()
-		return nil, errors.New("cannot get email/password")
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return user, tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return user, nil
 }
 
-func (u *userPG) UpdateUser(userPayload *entity.User, userId int) (*entity.User, error) {
+func (u *userPG) UpdateUser(userPayload *entity.User, userId int) (*entity.User, errs.MessageErr) {
 	tx := u.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -77,7 +85,7 @@ func (u *userPG) UpdateUser(userPayload *entity.User, userId int) (*entity.User,
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	userPayload.ID = userId
@@ -85,20 +93,24 @@ func (u *userPG) UpdateUser(userPayload *entity.User, userId int) (*entity.User,
 	fmt.Println(userPayload)
 	if err := tx.Updates(userPayload).Error; err != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	var user = &entity.User{}
 
 	if err := tx.First(&user, userId).Error; err != nil {
 		tx.Rollback()
-		return nil, errors.New("failed get user data")
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return user, tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return user, nil
 }
 
-func (u *userPG) GetUserByID(userId int) (*entity.User, error) {
+func (u *userPG) GetUserByID(userId int) (*entity.User, errs.MessageErr) {
 	tx := u.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -107,20 +119,24 @@ func (u *userPG) GetUserByID(userId int) (*entity.User, error) {
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	var user = &entity.User{}
 
 	if err := tx.First(&user, userId).Error; err != nil {
 		tx.Rollback()
-		return nil, errors.New("failed get user data")
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return user, tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return user, nil
 }
 
-func (u *userPG) DeleteUser(userId int) error {
+func (u *userPG) DeleteUser(userId int) errs.MessageErr {
 	tx := u.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -129,15 +145,19 @@ func (u *userPG) DeleteUser(userId int) error {
 	}()
 
 	if err := tx.Error; err != nil {
-		return err
+		return errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	var user = &entity.User{}
 
 	if err := tx.Delete(&user, userId).Error; err != nil {
 		tx.Rollback()
-		return err
+		return errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return nil
 }

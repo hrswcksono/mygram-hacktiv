@@ -3,14 +3,15 @@ package service
 import (
 	"github.com/hrswcksono/mygram-hacktiv/dto"
 	"github.com/hrswcksono/mygram-hacktiv/entity"
+	"github.com/hrswcksono/mygram-hacktiv/pkg/errs"
 	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository"
 )
 
 type PhotoService interface {
-	AddPhoto(dto *dto.CreatePhotoRequest, userId int) (*dto.CreatedPhotoResponse, error)
-	ReadAllPhoto() ([]dto.GetPhotoResponse, error)
-	EditPhoto(edit *dto.EditPhotoRequest, photoId int) (*dto.EditPhotoResponse, error)
-	DeletePhoto(photoId int) error
+	AddPhoto(dto *dto.CreatePhotoRequest, userId int) (*dto.CreatedPhotoResponse, errs.MessageErr)
+	ReadAllPhoto() ([]dto.GetPhotoResponse, errs.MessageErr)
+	EditPhoto(edit *dto.EditPhotoRequest, photoId int) (*dto.EditPhotoResponse, errs.MessageErr)
+	DeletePhoto(photoId int) errs.MessageErr
 }
 
 type photoService struct {
@@ -23,7 +24,7 @@ func NewPhotoService(photoRepo photo_repository.PhotoRepository) PhotoService {
 	}
 }
 
-func (p *photoService) AddPhoto(payload *dto.CreatePhotoRequest, userId int) (*dto.CreatedPhotoResponse, error) {
+func (p *photoService) AddPhoto(payload *dto.CreatePhotoRequest, userId int) (*dto.CreatedPhotoResponse, errs.MessageErr) {
 	photoRequest := &entity.Photo{}
 
 	payload.CreatePhotoRequestMapper(photoRequest)
@@ -47,7 +48,7 @@ func (p *photoService) AddPhoto(payload *dto.CreatePhotoRequest, userId int) (*d
 	return response, nil
 }
 
-func (p *photoService) ReadAllPhoto() ([]dto.GetPhotoResponse, error) {
+func (p *photoService) ReadAllPhoto() ([]dto.GetPhotoResponse, errs.MessageErr) {
 	photo, err := p.photoRepo.GetAllPhoto()
 
 	if err != nil {
@@ -57,7 +58,7 @@ func (p *photoService) ReadAllPhoto() ([]dto.GetPhotoResponse, error) {
 	return dto.MapperResponseGet(photo), nil
 }
 
-func (p *photoService) EditPhoto(edit *dto.EditPhotoRequest, userId int) (*dto.EditPhotoResponse, error) {
+func (p *photoService) EditPhoto(edit *dto.EditPhotoRequest, userId int) (*dto.EditPhotoResponse, errs.MessageErr) {
 
 	editPhotoRequest := &entity.Photo{}
 
@@ -83,7 +84,7 @@ func (p *photoService) EditPhoto(edit *dto.EditPhotoRequest, userId int) (*dto.E
 	return response, nil
 }
 
-func (p *photoService) DeletePhoto(photoId int) error {
+func (p *photoService) DeletePhoto(photoId int) errs.MessageErr {
 	err := p.photoRepo.DeletePhoto(photoId)
 	if err != nil {
 		return err

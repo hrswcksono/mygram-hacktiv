@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hrswcksono/mygram-hacktiv/entity"
+	"github.com/hrswcksono/mygram-hacktiv/pkg/errs"
 	"github.com/hrswcksono/mygram-hacktiv/repository/photo_repository"
 	"gorm.io/gorm"
 )
@@ -18,7 +19,7 @@ func NewPhotoPG(db *gorm.DB) photo_repository.PhotoRepository {
 	}
 }
 
-func (p *photoPG) CreatePhoto(photoPayload *entity.Photo) (*entity.Photo, error) {
+func (p *photoPG) CreatePhoto(photoPayload *entity.Photo) (*entity.Photo, errs.MessageErr) {
 	tx := p.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -27,18 +28,22 @@ func (p *photoPG) CreatePhoto(photoPayload *entity.Photo) (*entity.Photo, error)
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	if err := tx.Create(&photoPayload).Error; err != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return photoPayload, tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return photoPayload, nil
 }
 
-func (p *photoPG) GetAllPhoto() ([]entity.Photo, error) {
+func (p *photoPG) GetAllPhoto() ([]entity.Photo, errs.MessageErr) {
 	tx := p.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -47,20 +52,24 @@ func (p *photoPG) GetAllPhoto() ([]entity.Photo, error) {
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	var photo = []entity.Photo{}
 
 	if err := tx.Preload("User", func(db *gorm.DB) *gorm.DB { return db.Find(&entity.User{}) }).Find(&photo).Error; err != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return photo, tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return photo, nil
 }
 
-func (p *photoPG) UpdatePhoto(photoPayload *entity.Photo) (*entity.Photo, error) {
+func (p *photoPG) UpdatePhoto(photoPayload *entity.Photo) (*entity.Photo, errs.MessageErr) {
 	tx := p.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -69,20 +78,24 @@ func (p *photoPG) UpdatePhoto(photoPayload *entity.Photo) (*entity.Photo, error)
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	fmt.Println(photoPayload)
 
 	if err := tx.Updates(photoPayload).Error; err != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return photoPayload, tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return photoPayload, nil
 }
 
-func (p *photoPG) DeletePhoto(photoId int) error {
+func (p *photoPG) DeletePhoto(photoId int) errs.MessageErr {
 	tx := p.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -91,7 +104,7 @@ func (p *photoPG) DeletePhoto(photoId int) error {
 	}()
 
 	if err := tx.Error; err != nil {
-		return err
+		return errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	fmt.Println(photoId)
@@ -100,13 +113,17 @@ func (p *photoPG) DeletePhoto(photoId int) error {
 
 	if err := tx.Delete(&photo, photoId).Error; err != nil {
 		tx.Rollback()
-		return err
+		return errs.NewInternalServerErrorr("something went wrong")
 	}
 
-	return tx.Commit().Error
+	if err := tx.Commit().Error; err != nil {
+		return errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	return nil
 }
 
-func (p *photoPG) GetPhotoByID(photoId int) (*entity.Photo, error) {
+func (p *photoPG) GetPhotoByID(photoId int) (*entity.Photo, errs.MessageErr) {
 	tx := p.db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -115,14 +132,18 @@ func (p *photoPG) GetPhotoByID(photoId int) (*entity.Photo, error) {
 	}()
 
 	if err := tx.Error; err != nil {
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	var photo = &entity.Photo{}
 
 	if err := tx.Find(&photo, photoId).Error; err != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, errs.NewInternalServerErrorr("something went wrong")
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		return nil, errs.NewInternalServerErrorr("something went wrong")
 	}
 
 	return photo, nil

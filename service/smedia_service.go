@@ -3,14 +3,15 @@ package service
 import (
 	"github.com/hrswcksono/mygram-hacktiv/dto"
 	"github.com/hrswcksono/mygram-hacktiv/entity"
+	"github.com/hrswcksono/mygram-hacktiv/pkg/errs"
 	"github.com/hrswcksono/mygram-hacktiv/repository/social_media_repository"
 )
 
 type SMediaService interface {
-	AddSMedia(smedia *dto.CreateSMediaRequest, userId int) (*dto.CreateSMediaResponse, error)
-	ReadAllSMedia() (*dto.GetSMediaResponse, error)
-	EditSMedia(smedia *dto.EditSMediaRequest, smediaI int) (*dto.EditSMediaResponse, error)
-	DeleteSMedia(smediaId int) error
+	AddSMedia(smedia *dto.CreateSMediaRequest, userId int) (*dto.CreateSMediaResponse, errs.MessageErr)
+	ReadAllSMedia() (*dto.GetSMediaResponse, errs.MessageErr)
+	EditSMedia(smedia *dto.EditSMediaRequest, smediaI int) (*dto.EditSMediaResponse, errs.MessageErr)
+	DeleteSMedia(smediaId int) errs.MessageErr
 }
 
 type smediaService struct {
@@ -23,7 +24,7 @@ func NewSMediaService(smediaRepo social_media_repository.SocialMediaRepository) 
 	}
 }
 
-func (s *smediaService) AddSMedia(smedia *dto.CreateSMediaRequest, userId int) (*dto.CreateSMediaResponse, error) {
+func (s *smediaService) AddSMedia(smedia *dto.CreateSMediaRequest, userId int) (*dto.CreateSMediaResponse, errs.MessageErr) {
 	smediaRequest := &entity.SocialMedia{
 		Name:           smedia.Name,
 		SocialMediaURL: smedia.SocialMediaURL,
@@ -47,7 +48,7 @@ func (s *smediaService) AddSMedia(smedia *dto.CreateSMediaRequest, userId int) (
 	return response, nil
 }
 
-func (s *smediaService) ReadAllSMedia() (*dto.GetSMediaResponse, error) {
+func (s *smediaService) ReadAllSMedia() (*dto.GetSMediaResponse, errs.MessageErr) {
 	smedia, err := s.smediaRepo.GetAllSocialMedia()
 
 	if err != nil {
@@ -61,7 +62,7 @@ func (s *smediaService) ReadAllSMedia() (*dto.GetSMediaResponse, error) {
 	return response, nil
 }
 
-func (s *smediaService) EditSMedia(smedia *dto.EditSMediaRequest, smediaI int) (*dto.EditSMediaResponse, error) {
+func (s *smediaService) EditSMedia(smedia *dto.EditSMediaRequest, smediaI int) (*dto.EditSMediaResponse, errs.MessageErr) {
 
 	editSMedia := &entity.SocialMedia{
 		ID:             smediaI,
@@ -86,7 +87,7 @@ func (s *smediaService) EditSMedia(smedia *dto.EditSMediaRequest, smediaI int) (
 	return response, nil
 }
 
-func (s *smediaService) DeleteSMedia(smediaId int) error {
+func (s *smediaService) DeleteSMedia(smediaId int) errs.MessageErr {
 	err := s.smediaRepo.DeleteSocialMedia(smediaId)
 	if err != nil {
 		return err

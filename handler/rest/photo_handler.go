@@ -51,10 +51,7 @@ func (u photoRestHandler) AddPhoto(c *gin.Context) {
 	data, err := u.service.AddPhoto(&photo, userId)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -73,10 +70,7 @@ func (u photoRestHandler) ReadAllPhoto(c *gin.Context) {
 	photo, err := u.service.ReadAllPhoto()
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -115,13 +109,10 @@ func (u photoRestHandler) EditPhoto(c *gin.Context) {
 		return
 	}
 
-	data, err := u.service.EditPhoto(&photo, photoId)
+	data, err1 := u.service.EditPhoto(&photo, photoId)
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 
@@ -148,13 +139,10 @@ func (u photoRestHandler) DeletePhoto(c *gin.Context) {
 		return
 	}
 
-	err = u.service.DeletePhoto(photoId)
+	err1 := u.service.DeletePhoto(photoId)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 

@@ -47,13 +47,10 @@ func (u commentResthandler) AddComment(c *gin.Context) {
 
 	userId = value.ID
 
-	data, err := u.service.AddComment(&comment, userId)
+	data, err1 := u.service.AddComment(&comment, userId)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 
@@ -72,10 +69,7 @@ func (u commentResthandler) ReadAllComment(c *gin.Context) {
 	comment, err := u.service.ReadAllComment()
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -114,13 +108,10 @@ func (u commentResthandler) EditComment(c *gin.Context) {
 		return
 	}
 
-	data, err := u.service.EditComment(&comment, commentId)
+	data, err1 := u.service.EditComment(&comment, commentId)
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 
@@ -147,13 +138,10 @@ func (u commentResthandler) DeleteComment(c *gin.Context) {
 		return
 	}
 
-	err = u.service.DeleteComment(commentId)
+	err1 := u.service.DeleteComment(commentId)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"msg": err.Error(),
-			"err": "INTERNAL_SERVER_ERROR",
-		})
+	if err1 != nil {
+		c.JSON(err1.Status(), err1)
 		return
 	}
 
